@@ -75,6 +75,7 @@ public class WebcamPreview extends SurfaceView implements
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d(TAG, "Surface created");
         mRunning = true;
+        
         getContext().bindService(new Intent(getContext(), WebcamManager.class),
                 mConnection, Context.BIND_AUTO_CREATE);
         (new Thread(this)).start();
@@ -117,6 +118,7 @@ public class WebcamPreview extends SurfaceView implements
             Log.i(TAG, "Bound to WebcamManager");
             synchronized(mServiceSyncToken) {
                 mWebcamManager = ((WebcamManager.WebcamBinder)service).getService();
+                mWebcamManager.initCamera("/dev/video3");
                 mServiceSyncToken.notify();
             }
         }
