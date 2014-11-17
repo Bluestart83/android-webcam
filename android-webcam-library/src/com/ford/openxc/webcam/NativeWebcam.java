@@ -65,14 +65,21 @@ public class NativeWebcam implements Webcam {
 
     private static void rootDeviceFile(String deviceName) {
     	//String command = String.format("su -c \"chmod 666 %s\"", deviceName);
-    	String command = String.format("chmod 666 %s", deviceName);
-    	int ret = runCommand(command, true);
-    	if (ret !=0) {
-    		Log.e(TAG, "rootDeviceFile: error");
+    	File f = new File(deviceName);
+    	if(!f.canRead()) {
+    		String command = String.format("chmod 666 %s", deviceName);
+        	int ret = runCommand(command, true);
+        	if (ret !=0) {
+        		Log.e(TAG, "rootDeviceFile: error");
+        	}
+        	else {
+        		Log.i(TAG, "rootDeviceFile: success");
+        	}
     	}
     	else {
-    		Log.i(TAG, "rootDeviceFile: success");
+    		Log.i(TAG, "rootDeviceFile: already rooted");
     	}
+    	
     }
     
     private static int runCommand(String command, boolean bAsRoot) {
